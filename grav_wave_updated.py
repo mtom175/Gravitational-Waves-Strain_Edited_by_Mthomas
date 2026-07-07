@@ -1,30 +1,24 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-from scipy.signal import chirp
-#BY DEVBYSIMMI https://github.com/DevBySimmi/Gravitational-Waves-Strain
-# ============================================================
-# PARAMETERS
-# ============================================================
-
-
-
-
-# ============================================================
-# FIGURE
-# ============================================================
+#import matplotlib.image as mpimg
+#from PIL import Image
+#forked from DEVBYSIMMI https://github.com/DevBySimmi/Gravitational-Waves-Strain, modified by morgan thomas
 
 fig = plt.figure(figsize=(10, 10))
-fig.suptitle('Gravitional wave inspiral')
-# ============================================================
 # ORBIT PANEL
-# ============================================================
 
-ax1 = plt.subplot2grid((1,1),(0,0))
+
+ax1 = plt.subplot(1, 1, 1)
+
+#ax1.imshow(res)
+
+
 
 ax1.set_facecolor("black")
-
-
+ax1.axis("off")
+ax1.add_artist(ax1.patch)
+ax1.patch.set_zorder(-1)
 
 ax1.set_xlim(-12,12)
 ax1.set_ylim(-12,12)
@@ -32,7 +26,7 @@ ax1.set_ylim(-12,12)
 
 ax1.set_aspect('equal')
 
-# Starfield
+# Stars this is optional.
 
 np.random.seed(84)
 
@@ -65,19 +59,6 @@ bh2, = ax1.plot(
     markersize=30
 )
 
-# Accretion disks
-
-#disk1, = ax1.plot(
-#    [],
-#    [],
-#    color='white'
-#)
-
-#disk2, = ax1.plot(
-#    [],
-#    [],
-#    color='orange'
-#)
 
 # Trails
 
@@ -97,7 +78,7 @@ trail2, = ax1.plot(
 
 # Ripple waves
 
-num_ripples = 12
+num_ripples = 20
 
 ripples = []
 
@@ -118,26 +99,31 @@ theta_circle = np.linspace(
     2*np.pi,
     300
 )
-#Animation for just the inspiral
-x1_hist=[]
-y1_hist=[]
 
-x2_hist=[]
-y2_hist=[]
+#ripple after merge
+
+
+
+
+#Animation for just the inspiral
+X1=[]
+Y1=[]
+
+X2=[]
+Y2=[]
 
 frames = 500
 
-# ============================================================
+
 # ANIMATION
-# ============================================================
 
 def update(frame):
 
     progress = frame / frames
 
-    radius = 4*(1-progress)+0.15
+    radius = 6*(1-progress)
 
-    theta = progress * 30*np.pi
+    theta = progress * 30*np.pi #changes the orbit of the blackholes and velocity
 
     x1 = radius*np.cos(theta)
     y1 = radius*np.sin(theta)
@@ -150,43 +136,29 @@ def update(frame):
     bh1.set_data([x1],[y1])
     bh2.set_data([x2],[y2])
 
-    # Accretion disks
-
-    #disk_r = 0.8
-
-    #disk1.set_data(
-    #    x1 + disk_r*np.cos(theta_circle),
-    #    y1 + disk_r*np.sin(theta_circle)
-    #)
-
-    #disk2.set_data(
-    #    x2 + disk_r*np.cos(theta_circle),
-    #    y2 + disk_r*np.sin(theta_circle)
-    #)
-
     # Trails
 
-    x1_hist.append(x1)
-    y1_hist.append(y1)
+    X1.append(x1)
+    Y1.append(y1)
 
-    x2_hist.append(x2)
-    y2_hist.append(y2)
+    X2.append(x2)
+    Y2.append(y2)
 
     trail1.set_data(
-        x1_hist,
-        y1_hist
+        X1,
+        Y1
     )
 
     trail2.set_data(
-        x2_hist,
-        y2_hist
+        X2,
+        Y2
     )
 
     # Gravitational wave ripples
 
     for i, ripple in enumerate(ripples):
 
-        r = (frame*0.08) - i*1.5
+        r = (frame*0.08) - i*2 #effects the speed of the ripples
 
         if r > 0:
 
@@ -196,18 +168,7 @@ def update(frame):
             ripple.set_data(
                 x_r,
                 y_r
-            )
-
-            ripple.set_alpha(
-                max(
-                    0,
-                    1-r/12
                 )
-            )
-
-        else:
-
-            ripple.set_data([],[])
 
     return (
         bh1,
@@ -215,7 +176,7 @@ def update(frame):
         trail1,
         trail2,
         *ripples
-    )
+        )
 
 ani = FuncAnimation(
     fig,
@@ -226,6 +187,6 @@ ani = FuncAnimation(
 )
 
 plt.tight_layout()
-# saves the animation in our desktop
+# saves the animation to your desktop
 ani.save('growingCoil.mp4', writer = 'ffmpeg', fps = 30)
 plt.show()
