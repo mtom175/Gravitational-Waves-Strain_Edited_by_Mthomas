@@ -48,7 +48,7 @@ trail2, = ax1.plot( [], [], 'orange',lw=1)
 num_ripples = 20
 ripples = []
 
-for _ in range(num_ripples):
+for i in range(num_ripples):
 
     ripple, = ax1.plot([],[],color='white',lw=1,alpha=0.6)
     ripples.append(ripple)
