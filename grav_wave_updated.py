@@ -107,12 +107,9 @@ def update(frame):
 
         r = (frame*0.08) - i*2 #effects the speed of the ripples
 
-        if r > 0:
-
-            x_r = r*np.cos(theta_circle)
-            y_r = r*np.sin(theta_circle)
-
-            ripple.set_data(x_r,y_r)
+        x_r = r*np.cos(theta_circle)
+        y_r = r*np.sin(theta_circle)
+        ripple.set_data(x_r,y_r)
 
     return (bh1,bh2,trail1,trail2,*ripples)
 
