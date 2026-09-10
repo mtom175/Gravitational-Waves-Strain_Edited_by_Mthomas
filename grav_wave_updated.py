@@ -120,5 +120,5 @@ ani = FuncAnimation(fig,update,frames=frames,interval=20,blit=True)
 
 plt.tight_layout()
 # saves the animation to your desktop
-ani.save('growingCoil.mp4', writer = 'ffmpeg', fps = 30)
+ani.save('Inspiral.mp4', writer = 'ffmpeg', fps = 30)
 plt.show()
